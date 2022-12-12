@@ -58,7 +58,7 @@ export class controlMainStreet extends Component {
 
   createMainStreet() {
     for (var i = 0; i < this.mainStreetArray.length; i++) {
-      if ((i = 1)) {
+      if (i == 1) {
         if (this.mainStreetArray[i] == this.mainStreetArray[i - 1]) {
           this.changeSuit = false;
         } else if (this.mainStreetArray[i] != this.mainStreetArray[i - 1]) {
