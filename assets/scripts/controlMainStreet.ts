@@ -97,18 +97,30 @@ export class controlMainStreet extends Component {
           .contentSize.height;
       let y1 = Math.round(y);
 
-      console.log("before pos", objPos.position);
-      objPos.setPosition(
-        this.mainStreetTransform.children[
-          this.mainStreetTransform.children.length - 1
-        ].position.x,
-        this.mainStreetTransform.children[
-          this.mainStreetTransform.children.length - 1
-        ].position.y - y1,
-        0
-      );
-      this.mainStreetTransform.addChild(objPos);
-      console.log("pos ", objPos.position);
+      if (this.changeSuit) {
+        objPos.setPosition(
+          this.mainStreetTransform.children[
+            this.mainStreetTransform.children.length - 1
+          ].position.x + x1,
+          this.mainStreetTransform.children[
+            this.mainStreetTransform.children.length - 1
+          ].position.y,
+          0
+        );
+        this.mainStreetTransform.addChild(objPos);
+      } else {
+        objPos.setPosition(
+          this.mainStreetTransform.children[
+            this.mainStreetTransform.children.length - 1
+          ].position.x,
+          this.mainStreetTransform.children[
+            this.mainStreetTransform.children.length - 1
+          ].position.y - y1,
+          0
+        );
+        this.mainStreetTransform.addChild(objPos);
+        console.log("pos ", objPos.position);
+      }
     }
   }
 
