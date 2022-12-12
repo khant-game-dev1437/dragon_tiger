@@ -537,6 +537,10 @@
       "__uuid__": "affab16e-7eb5-40ed-8a09-a6a6403a661f",
       "__expectedType__": "cc.Prefab"
     },
+    "red": {
+      "__uuid__": "825d9635-ea94-4e80-9a40-e486ad20d35f",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": "79vmcxKABK6K4QI37ZIMwS"
   },
   {
