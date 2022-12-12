@@ -6,11 +6,16 @@ import {
   instantiate,
   Layout,
   UITransform,
+  geometry,
+  Camera,
 } from "cc";
 const { ccclass, property } = _decorator;
 
 @ccclass("controlMainStreet")
 export class controlMainStreet extends Component {
+  @property(Camera)
+  cam: Camera = null!;
+
   @property(Node)
   mainStreetTransform: Node;
 
@@ -90,8 +95,6 @@ export class controlMainStreet extends Component {
     if (this.mainStreetTransform.children.length == 0) {
       this.mainStreetTransform.addChild(objPos);
       objPos.setPosition(-101.7985, 40, 0);
-
-      console.log("hi");
     } else {
       let x =
         this.mainStreetTransform.children[0].getComponent(UITransform) // For Objects placing
@@ -115,7 +118,31 @@ export class controlMainStreet extends Component {
         this.mainStreetTransform.addChild(objPos);
       } else {
         //check object is already created at the bottom of UI or not.
-        // if()
+
+        // const outRay = new geometry.Ray(
+        //   this.mainStreetTransform.children[
+        //     this.mainStreetTransform.children.length - 1
+        //   ].position.x,
+        //   this.mainStreetTransform.children[
+        //     this.mainStreetTransform.children.length - 1
+        //   ].position.y - y1,
+        //   0,
+        //   0,
+        //   0,
+        //   1
+        // );
+        const camera = this.cam.getComponent(Camera);
+        const outRay = new geometry.Ray();
+        camera?.screenPointToRay(
+          this.mainStreetTransform.children[
+            this.mainStreetTransform.children.length - 1
+          ].position.x,
+          this.mainStreetTransform.children[
+            this.mainStreetTransform.children.length - 1
+          ].position.y - y1,
+          outRay
+        );
+
         objPos.setPosition(
           this.mainStreetTransform.children[
             this.mainStreetTransform.children.length - 1
@@ -129,6 +156,8 @@ export class controlMainStreet extends Component {
       }
     }
   }
+
+  checkRaycast() {}
 
   checkDebug() {
     setTimeout(() => {
