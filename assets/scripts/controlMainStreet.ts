@@ -64,6 +64,12 @@ export class controlMainStreet extends Component {
         } else if (this.mainStreetArray[i] != this.mainStreetArray[i - 1]) {
           this.changeSuit = true;
         }
+      } else {
+        if (this.mainStreetArray[i] == this.mainStreetArray[i - 1]) {
+          this.changeSuit = false;
+        } else if (this.mainStreetArray[i] != this.mainStreetArray[i - 1]) {
+          this.changeSuit = true;
+        }
       }
       if (this.mainStreetArray[i] == mainStreetNames.tiger) {
         this.createObject(this.blue);
@@ -75,7 +81,6 @@ export class controlMainStreet extends Component {
   }
 
   createObject(obj: Node) {
-    console.log("create");
     let prefab = instantiate(obj);
     this.checkPosition(prefab);
   }
@@ -89,11 +94,11 @@ export class controlMainStreet extends Component {
       console.log("hi");
     } else {
       let x =
-        this.mainStreetTransform.children[0].getComponent(UITransform)
+        this.mainStreetTransform.children[0].getComponent(UITransform) // For Objects placing
           .contentSize.width;
       let x1 = Math.round(x);
       let y =
-        this.mainStreetTransform.children[0].getComponent(UITransform)
+        this.mainStreetTransform.children[0].getComponent(UITransform) // For Objects placing
           .contentSize.height;
       let y1 = Math.round(y);
 
@@ -109,6 +114,8 @@ export class controlMainStreet extends Component {
         );
         this.mainStreetTransform.addChild(objPos);
       } else {
+        //check object is already created at the bottom of UI or not.
+        // if()
         objPos.setPosition(
           this.mainStreetTransform.children[
             this.mainStreetTransform.children.length - 1
@@ -119,7 +126,6 @@ export class controlMainStreet extends Component {
           0
         );
         this.mainStreetTransform.addChild(objPos);
-        console.log("pos ", objPos.position);
       }
     }
   }
