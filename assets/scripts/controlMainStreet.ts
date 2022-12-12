@@ -35,10 +35,12 @@ export class controlMainStreet extends Component {
     "tiger",
   ];
 
-  start() {}
+  start() {
+    this.createMainStreet();
+  }
 
   onLoad() {
-    this.createMainStreet();
+    //this.createMainStreet();
   }
   update(deltaTime: number) {}
 
@@ -48,10 +50,11 @@ export class controlMainStreet extends Component {
         this.createObject(this.blue);
       }
     }
+    console.log("Length", this.mainStreetTransform.children.length);
   }
 
   createObject(obj: Node) {
-    let prefab = instantiate(obj) as Node;
+    let prefab = instantiate(obj);
     this.checkPosition(prefab);
   }
 
@@ -59,7 +62,7 @@ export class controlMainStreet extends Component {
     console.log("transform count ", this.mainStreetTransform.children.length);
     if (this.mainStreetTransform.children.length == 0) {
       this.mainStreetTransform.addChild(objPos);
-      this.mainStreetTransform.getComponent(Layout).enabled = false;
+      objPos.setPosition(-133.2985, 40, 0);
       console.log("hi");
     }
   }
