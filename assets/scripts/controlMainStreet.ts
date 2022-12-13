@@ -8,8 +8,9 @@ import {
   geometry,
   Camera,
   PhysicsSystem,
+  Vec3,
 } from "cc";
-
+const { ray } = geometry;
 const { ccclass, property } = _decorator;
 
 @ccclass("controlMainStreet")
@@ -68,7 +69,7 @@ export class controlMainStreet extends Component {
   ];
 
   start() {
-    //this.checkRaycast();
+    this.checkRaycast();
   }
   shuffle(array) {
     let currentIndex = array.length,
@@ -195,6 +196,7 @@ export class controlMainStreet extends Component {
           console.log("destroyed");
         }
         const ray = new geometry.Ray();
+
         this.cam.screenPointToRay(
           this.mainStreetTransform.children[
             this.mainStreetTransform.children.length - 1
@@ -204,10 +206,10 @@ export class controlMainStreet extends Component {
           ].position.y - y1,
           ray
         );
-        if (PhysicsSystem.instance.raycast(ray)) {
-          console.log("wtf");
-          const r = PhysicsSystem.instance.raycastResults;
 
+        if (PhysicsSystem.instance.raycast(ray)) {
+          const r = PhysicsSystem.instance.raycastResults;
+          console.log("wtf", r[0].hitPoint);
           console.log("NodeName ", r[0].collider.node.name);
         }
       }
@@ -226,16 +228,17 @@ export class controlMainStreet extends Component {
     }
   }
 
-  // checkRaycast() {
-  //   const ray = new geometry.Ray();
-  //   this.cam.screenPointToRay(11, 19, ray);
-  //   console.log("physics ", PhysicsSystem);
-  //   if (PhysicsSystem.instance.raycast(ray)) {
-  //     console.log("wtf");
-  //     const r = PhysicsSystem.instance.raycastResults;
-  //     console.log("NodeName ", r[0].collider.node.name);
-  //   }
-  // }
+  checkRaycast() {
+    const ray = new geometry.Ray();
+
+    this.cam.screenPointToRay(0, 0, ray);
+
+    if (PhysicsSystem.instance.raycast(ray)) {
+      const r = PhysicsSystem.instance.raycastResults;
+      console.log("wtf", r[0].hitPoint);
+      console.log("NodeName ", r[0].collider.node.name);
+    }
+  }
   checkDebug() {
     setTimeout(() => {
       console.log("check length ", this.mainStreetTransform.children.length);
