@@ -26,13 +26,23 @@ export class controlMainStreet extends Component {
   red: Node = null!;
 
   private changeSuit: boolean = false;
+  private xArr = [];
+  private yArr = [];
+  private xFinalPosition: number;
+  private yFinalPosition: number;
+  private panelHeight = 100; // Panel height to add Objects
+  private panelWidth = 223; // Panel width to add Objects
 
+  private yBot;
   private mainStreetArray = [
     "tiger",
     "tiger",
     "tiger",
-
     "tiger",
+    "tiger",
+    "tiger",
+    "tiger",
+
     "dragon",
 
     "dragon",
@@ -95,6 +105,8 @@ export class controlMainStreet extends Component {
     if (this.mainStreetTransform.children.length == 0) {
       this.mainStreetTransform.addChild(objPos);
       objPos.setPosition(-101.7985, 40, 0);
+      this.xArr.push(-101.7985);
+      this.yArr.push(40);
     } else {
       let x =
         this.mainStreetTransform.children[0].getComponent(UITransform) // For Objects placing
@@ -106,31 +118,18 @@ export class controlMainStreet extends Component {
       let y1 = Math.round(y);
 
       if (this.changeSuit) {
-        objPos.setPosition(
-          this.mainStreetTransform.children[
-            this.mainStreetTransform.children.length - 1
-          ].position.x + x1,
-          this.mainStreetTransform.children[
-            this.mainStreetTransform.children.length - 1
-          ].position.y,
-          0
-        );
+        this.xFinalPosition = this.xArr[this.xArr.length - 1] + x1; // To adjust row height while change suit
+        console.log("xFINALPOs ", this.xFinalPosition);
+        this.xArr.push(this.xFinalPosition);
+
+        this.yFinalPosition = this.yArr[this.yArr.length - 1]; // To adjust column height while change suit
+        this.yArr.push(this.yFinalPosition);
+
+        objPos.setPosition(this.xFinalPosition, this.yFinalPosition, 0);
         this.mainStreetTransform.addChild(objPos);
       } else {
         //check object is already created at the bottom of UI or not.
 
-        // const outRay = new geometry.Ray(
-        //   this.mainStreetTransform.children[
-        //     this.mainStreetTransform.children.length - 1
-        //   ].position.x,
-        //   this.mainStreetTransform.children[
-        //     this.mainStreetTransform.children.length - 1
-        //   ].position.y - y1,
-        //   0,
-        //   0,
-        //   0,
-        //   1
-        // );
         const camera = this.cam.getComponent(Camera);
         const outRay = new geometry.Ray();
         camera?.screenPointToRay(
@@ -142,7 +141,12 @@ export class controlMainStreet extends Component {
           ].position.y - y1,
           outRay
         );
+        this.yBot =
+          this.mainStreetTransform.children[
+            this.mainStreetTransform.children.length - 1
+          ].position.y - y1;
 
+        console.log("YBot", this.yBot);
         objPos.setPosition(
           this.mainStreetTransform.children[
             this.mainStreetTransform.children.length - 1
@@ -162,6 +166,7 @@ export class controlMainStreet extends Component {
   checkDebug() {
     setTimeout(() => {
       console.log("check length ", this.mainStreetTransform.children.length);
+      console.log("xArr ", this.xArr);
     }, 2000);
   }
 }
