@@ -597,7 +597,7 @@
     "node": {
       "__id__": 13
     },
-    "_enabled": true,
+    "_enabled": false,
     "__prefab": null,
     "_resizeMode": 2,
     "_layoutType": 3,

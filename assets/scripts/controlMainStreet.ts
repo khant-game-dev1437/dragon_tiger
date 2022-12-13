@@ -8,7 +8,10 @@ import {
   UITransform,
   geometry,
   Camera,
+  PhysicsSystem,
+  physics,
 } from "cc";
+//const { PhysicsRayResult } = physics;
 const { ccclass, property } = _decorator;
 
 @ccclass("controlMainStreet")
@@ -26,41 +29,44 @@ export class controlMainStreet extends Component {
   red: Node = null!;
 
   private changeSuit: boolean = false;
-  private xArr = [];
-  private yArr = [];
-  private xFinalPosition: number;
-  private yFinalPosition: number;
-  private panelHeight = 100; // Panel height to add Objects
-  private panelWidth = 223; // Panel width to add Objects
+  private xArr = []; // save all x positions of objects
+  private yArr = []; // save all y positions of objects
+  private xFinalPosition: number; // last x position of an object
+  private yFinalPosition: number; // last y position of an object
+  private panelHeight = -40; // Panel edge point to add Objects
+  private panelWidth = 104; // Panel width to add Objects
 
   private yBot;
+  private xWidth;
+
   private mainStreetArray = [
     "tiger",
     "tiger",
     "tiger",
     "tiger",
+
+    "dragon",
+    "dragon",
+    "dragon",
+
+    "dragon",
+    //"dragon",
+    //"dragon",
     "tiger",
     "tiger",
-    "tiger",
+    //"tiger",
 
     "dragon",
 
     "dragon",
     "dragon",
-    "tiger",
-    "tiger",
-    "tiger",
-
-    "tiger",
-    "dragon",
-
     "dragon",
     "dragon",
     "tiger",
     "tiger",
     "tiger",
 
-    "tiger",
+    //"tiger",
   ];
 
   start() {}
@@ -128,35 +134,81 @@ export class controlMainStreet extends Component {
         objPos.setPosition(this.xFinalPosition, this.yFinalPosition, 0);
         this.mainStreetTransform.addChild(objPos);
       } else {
-        //check object is already created at the bottom of UI or not.
-
-        const camera = this.cam.getComponent(Camera);
-        const outRay = new geometry.Ray();
-        camera?.screenPointToRay(
-          this.mainStreetTransform.children[
-            this.mainStreetTransform.children.length - 1
-          ].position.x,
-          this.mainStreetTransform.children[
-            this.mainStreetTransform.children.length - 1
-          ].position.y - y1,
-          outRay
-        );
         this.yBot =
           this.mainStreetTransform.children[
             this.mainStreetTransform.children.length - 1
           ].position.y - y1;
-
-        console.log("YBot", this.yBot);
-        objPos.setPosition(
+        this.xWidth =
           this.mainStreetTransform.children[
             this.mainStreetTransform.children.length - 1
-          ].position.x,
-          this.mainStreetTransform.children[
-            this.mainStreetTransform.children.length - 1
-          ].position.y - y1,
-          0
-        );
+          ].position.x + x1;
+        console.log("xWidth", this.xWidth);
+        if (this.yBot <= this.panelHeight) {
+          // Check there is an object already created or not ,  Check Panel height to adjust objects position
+          objPos.setPosition(
+            this.mainStreetTransform.children[
+              this.mainStreetTransform.children.length - 1
+            ].position.x + x1,
+            this.mainStreetTransform.children[
+              this.mainStreetTransform.children.length - 1
+            ].position.y,
+            0
+          );
+          this.yBot = 0;
+        } else {
+          objPos.setPosition(
+            this.mainStreetTransform.children[
+              this.mainStreetTransform.children.length - 1
+            ].position.x,
+            this.mainStreetTransform.children[
+              this.mainStreetTransform.children.length - 1
+            ].position.y - y1,
+            0
+          );
+          this.yBot = 0;
+        }
         this.mainStreetTransform.addChild(objPos);
+
+        if (this.xWidth >= this.panelWidth) {
+          objPos.destroy();
+          console.log("destroyed");
+        }
+
+        // const worldRay = new geometry.Ray(
+        //   this.mainStreetTransform.children[
+        //     this.mainStreetTransform.children.length - 1
+        //   ].position.x,
+        //   this.mainStreetTransform.children[
+        //     this.mainStreetTransform.children.length - 1
+        //   ].position.y - y1,
+        //   0,
+        //   0,
+        //   1,
+        //   0
+        // );
+        // let ray = new geometry.Ray();
+        // this.cam.screenPointToRay(0, 0, ray);
+        // // The following parameters are optional
+        // const mask = 0xffffffff;
+        // const maxDistance = 10000000;
+        // const queryTrigger = true;
+
+        // if (
+        //   PhysicsSystem.instance.raycastClosest(
+        //     ray,
+        //     mask,
+        //     maxDistance,
+        //     queryTrigger
+        //   )
+        // ) {
+        //   const raycastClosestResult =
+        //     PhysicsSystem.instance.raycastClosestResult;
+        //   const hitPoint = raycastClosestResult.hitPoint;
+        //   const hitNormal = raycastClosestResult.hitNormal;
+        //   const collider = raycastClosestResult.collider;
+        //   const distance = raycastClosestResult.distance;
+        //   console.log("collider ", collider);
+        // }
       }
     }
   }

@@ -6,5 +6,11 @@
       "width": 390,
       "height": 844
     }
-  }
+  },
+  "layer": [
+    {
+      "name": "blue",
+      "value": 1
+    }
+  ]
 }
